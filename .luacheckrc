@@ -15,6 +15,12 @@ exclude_files = {
   ".luarocks",
   ".install"
 }
+globals = {
+  -- acceptable as SILE has the necessary compatibility shims:
+  -- pl.utils.unpack provides extra functionality and nil handling
+  -- but our modules shouldn't be using that anyway.
+  "table.unpack"
+}
 files["**/*_spec.lua"] = {
   std = "+busted"
 }
