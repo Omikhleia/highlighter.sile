@@ -6,7 +6,7 @@
 
 This package for the [SILE](https://github.com/sile-typesetter/sile) typesetting system provides a code “syntax highlighter”.
 
-It's a simple wrapper around the Scintillua syntax highlighting library, providing a SILE package to use it.
+It's a simple wrapper around the [Scintillua](https://github.com/orbitalquark/scintillua) syntax highlighting library, providing a SILE package to use it.
 
 ![Syntax highlighted code](highlighter.png "Syntax highlighted code")
 
@@ -39,4 +39,4 @@ TODO: A readable version of the documentation is included in the User Manual for
 
 All SILE-related code and samples in this repository are released under the MIT License, (c) 2025,Omikhleia.
 
-The syntax highlighting support (as a Git submodule) is Scintillua, which is released under the MIT License, (c) 2006-2015, Mitchell.
+The syntax highlighting support (as a Git submodule) is [Scintillua](https://github.com/orbitalquark/scintillua), which is released under the MIT License, (c) 2007-2025, Mitchell.
