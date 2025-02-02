@@ -1,0 +1,76 @@
+\begin[papersize=a5]{document}
+\nofolios
+\neverindent
+\use[module=packages.highlighter]
+\use[module=packages.color]
+
+\begin[type=highlight,language=lua]{raw}
+local function fibonacci(n) -- Fibonacci in Lua
+    if n <= 1 then
+        return n
+    end
+    return fibonacci(n - 1) + fibonacci(n - 2)
+end
+\end{raw}
+
+\begin[type=highlight,language=c]{raw}
+#include <stdio.h>
+int fibonacci(int n) { /* Fibonacci in C */
+    if (n <= 1) {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+\end{raw}
+
+\begin[type=highlight,language=python]{raw}
+def fibonacci(n): # Fibonacci in Python
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+\end{raw}
+
+\begin[type=highlight,language=java]{raw}
+public class Fibonacci { // Fibonacci in Java
+    public static int fibonacci(int n) {
+        if (n <= 1) {
+            return n;
+        }
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+}
+\end{raw}
+
+\begin[type=highlight,language=rust]{raw}
+fn fibonacci(n: i32) -> i32 { // Fibonacci in Rust
+    if n <= 1 {
+        return n;
+    }
+    fibonacci(n - 1) + fibonacci(n - 2)
+}
+\end{raw}
+
+\begin[type=highlight,language=pascal]{raw}
+function fibonacci(n: integer): integer; { Fibonacci in Pascal }
+begin
+    if n <= 1 then
+        fibonacci := n
+    else
+        fibonacci := fibonacci(n - 1) + fibonacci(n - 2);
+end;
+\end{raw}
+
+\begin[type=highlight,language=diff]{raw}
+--- a/fibonacci.c
++++ b/fibonacci.c
+@@ -1,5 +1,5 @@
+ #include <stdio.h>
+
+-int fibonacci(int n) {
++long fibonacci(int n) {
+     if (n <= 1) {
+         return n;
+     }
+\end{raw}
+
+\end{document}

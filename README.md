@@ -8,6 +8,8 @@ This package for the [SILE](https://github.com/sile-typesetter/sile) typesetting
 
 It's a simple wrapper around the Scintillua syntax highlighting library, providing a SILE package to use it.
 
+![Syntax highlighted code](highlighter.png "Syntax highlighted code")
+
 The package works both with SILE's standard distribution and with the [**resilient.sile**](https://github.com/Omikhleia/resilient.sile) collection of classes and packages.
 In the latter case, it subscribes to the resilient styling paradigm, allowing for fine-grained control over the appearance of the highlighted code.
 
