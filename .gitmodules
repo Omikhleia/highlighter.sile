@@ -1,0 +1,3 @@
+[submodule "scintillua"]
+	path = scintillua
+	url = git@github.com:orbitalquark/scintillua.git
