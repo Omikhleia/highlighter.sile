@@ -174,6 +174,12 @@ function package:registerRawHandlers ()
     if lang then
       table.insert(languages, 1, lang)
     end
+    if #languages == 0 then
+      -- No language specified, just print the code as is.
+      SILE.call("verbatim", {}, { code })
+      return
+    end
+
     -- Find a lexer for the language(s)
     local ret = hackRequirePathForScintillua(function()
       local lexer = require('lexer')
@@ -185,7 +191,7 @@ function package:registerRawHandlers ()
         end
       end
       if not found then
-        SU.debug("highlighter", "No lexer found for language")
+        SU.debug("highlighter", "No lexer found for language", options.class)
         return {}
       end
       local fname = found
@@ -195,7 +201,7 @@ function package:registerRawHandlers ()
     local tokens, language = table.unpack(ret)
     if not tokens then
       -- No lexer found, just print the code as is.
-      SILE.call("verbatim", {}, code)
+      SILE.call("verbatim", {}, { code })
       return
     end
     -- Now we have tokens, we can style them.
@@ -247,7 +253,7 @@ function package:registerRawHandlers ()
         "highlighter",
         "Some tokens are not styled for language",
         language or "unknown",
-        table.concat(pl.tablex.keys(nostyle), ", ")
+        table.concat(pl.tablex.keys(nostyle), ", ") -- Slightly bad: computed even with no debug
       )
     end
   end)
