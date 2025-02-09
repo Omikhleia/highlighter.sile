@@ -132,6 +132,7 @@ package._name = "highlighter"
 function package:_init (_)
   base._init(self)
   self:loadAltPackage("resilient.verbatim", "verbatim")
+  self:loadPackage("labelrefs")
 
   -- Names of available lexers.
   self._hasLexer = {}
@@ -225,6 +226,26 @@ end
 function package:registerRawHandlers ()
   self.class:registerRawHandler("highlight", function(options, content)
     local code = content[1]
+    -- Without lots of clumsy %s everywhere in SIL...
+    -- We'd usually have:
+    --   \begin[type=highlight]{raw} <--- Introduces a \n
+    --   code
+    --   code <--- Followed by a \n
+    --   \end{raw}
+    -- Or even:
+    --   \raw{ <--- Introduces a \n
+    --   code
+    --   code <--- Followed by a \n
+    --   }
+    -- Let's trim that mess.
+    code = code:gsub("^[%s]*\n", ""):gsub("\n[%s]*$", "")
+
+    -- If we have a marker, we want to introduce a label at the appropriate place.
+    -- The code was trimmed, so we will be able to safely insert the label at the
+    -- beginning of the code, whether syntax-highlighted or not.
+    local marker = options.marker
+    local labelCommand = marker and SU.ast.createCommand("label", { marker = marker })
+
     local lang = options.language
     -- HACK: Quick and dirty compatibility with the markdown.sile collection.
     -- In Markdown, one can write:
@@ -250,7 +271,7 @@ function package:registerRawHandlers ()
     end
     if #languages == 0 then
       -- No language specified, just print the code as is.
-      SILE.call("verbatim", {}, { code })
+      SILE.call("verbatim", {}, marker and { labelCommand, code } or { code })
       return
     end
 
@@ -275,11 +296,14 @@ function package:registerRawHandlers ()
     local tokens, language = table.unpack(ret)
     if not tokens then
       -- No lexer found, just print the code as is.
-      SILE.call("verbatim", {}, { code })
+      SILE.call("verbatim", {}, marker and { labelCommand, code } or { code })
       return
     end
     -- Now we have tokens, we can style them.
     local spans = {}
+    if options.marker then
+      table.insert(spans, labelCommand)
+    end
     local last = 1
     local nostyle = {}
     for i = 1, #tokens, 2 do
@@ -331,18 +355,34 @@ function package:registerStyles ()
 end
 
 package.documentation =[[\begin{document}
+\use[module=packages.highlighter]
 The \autodoc:package{highlighter} package is a code syntax highlighter for SILE, based on Scintillua.
 It is compatible with the standard SILE distribution and the (style-aware) resilient collection of classes and packages.
 
 The package provides a raw handler \code{highlight} for syntax-highlighting code blocks in your documents.
 Parameter \autodoc:parameter{language} is used to specify the language of the code block.
 Without it, or for an unsupported language, the code block is displayed as is.
-For easier compatibility with Markdown, you can also use the \autodoc:parameter{class} parameter to specify a space-separated list of classes, and the first one that matches a supported language is used.
+You can also use the \autodoc:parameter{class} parameter to specify a space-separated list of classes, and the first one that matches a supported language is used.
 
 When used in a style-aware context, the package registers a set of character styles \code{highlight-⟨token⟩} for most token types recognized by Scintillua.
 You can then customize your document style file and modify anything you want, from colors to fonts and decorations, and more.
 
 In a non-style-aware context, the package uses a default theme for highlighting, and only honors the color and font properties.
+
+The handler also accepts a \autodoc:parameter{marker} parameter to introduce a label at the appropriate place.
+This is useful for cross-references, in conjunction with the \autodoc:package{labelrefs} package.
+The verbatim environment around the code block may introduce vertical space, so the marker is placed inside it, on the very first line of code.
+
+\begin[type=highlight, language=rust, marker=highlighter-my-id]{raw}
+fn fib(n: i32) -> i32 { // Fibonacci in Rust
+    if n <= 1 {
+        return n;
+    }
+    fib(n - 1) + fib(n - 2)
+}
+\end{raw}
+
+The code snippet is on page \pageref[marker=highlighter-my-id].
 
 \end{document}]]
 

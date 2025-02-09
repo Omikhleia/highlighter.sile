@@ -17,6 +17,7 @@ description = {
 }
 dependencies = {
    "lua >= 5.1",
+   "labelrefs.sile >= 0.1.0",
 }
 build = {
   type = "builtin",
