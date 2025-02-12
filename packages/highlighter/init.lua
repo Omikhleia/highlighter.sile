@@ -94,7 +94,7 @@ local theme = {
   ['environment.math'] = { color =  '#116644' },
   --- For diff
   addition = {
-    color =  '#C99000',
+    color =  '#7F6600',
     decoration = {
       line = 'mark',
       color = '#FFDE8A',
@@ -382,7 +382,22 @@ fn fib(n: i32) -> i32 { // Fibonacci in Rust
 }
 \end{raw}
 
-The code snippet is on page \pageref[marker=highlighter-my-id].
+The Rust code snippet is on page \pageref[marker=highlighter-my-id].
+In a style aware context, the following “diff” code snippet is displayed with a decorated style for additions and deletions.
+Otherwise, it’s just syntax-colored.
+
+\begin[type=highlight,language=diff]{raw}
+--- a/fibonacci.c
++++ b/fibonacci.c
+@@ -1,5 +1,5 @@
+ #include <stdio.h>
+
+-int fibonacci(int n) {
++long fibonacci(int n) {
+     if (n <= 1) {
+         return n;
+     }
+\end{raw}
 
 \end{document}]]
 
