@@ -131,7 +131,14 @@ package._name = "highlighter"
 
 function package:_init (_)
   base._init(self)
+  -- Use the resilient styling paradigm if available for verbatim.
   self:loadAltPackage("resilient.verbatim", "verbatim")
+  -- Loading colors for the non-resilient context.
+  -- In resilient context, the styling paradigm would load it anyway
+  -- so there's no problem having it here.
+  -- (Resilient does not suffer from multiple package instantiation)
+  self:loadPackage("color")
+  -- Loading labelrefs for the label command, see documentation below.
   self:loadPackage("labelrefs")
 
   -- Names of available lexers.
