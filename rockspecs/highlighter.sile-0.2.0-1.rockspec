@@ -1,8 +1,9 @@
 rockspec_format = "3.0"
 package = "highlighter.sile"
-version = "dev-1"
+version = "0.2.0-1"
 source = {
   url = "git+https://github.com/Omikhleia/highlighter.sile.git",
+  tag = "v0.2.0",
 }
 description = {
   summary = "A code syntax higlighting package for the SILE typesetting system.",
@@ -16,7 +17,7 @@ description = {
 }
 dependencies = {
    "lua >= 5.1",
-   "labelrefs.sile",
+   "labelrefs.sile >= 0.1.0",
 }
 build = {
   type = "builtin",

@@ -2,7 +2,6 @@
 \nofolios
 \neverindent
 \use[module=packages.highlighter]
-\use[module=packages.color]
 
 \begin[type=highlight,language=lua]{raw}
 local function fibonacci(n) -- Fibonacci in Lua
