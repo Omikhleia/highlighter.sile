@@ -23,6 +23,8 @@ build = {
   modules = {
     ["sile.packages.highlighter"] = "packages/highlighter/init.lua",
 
+    ["sile.addon-lexers.sil"] = "addon-lexers/sil.lua",
+
     ["sile.scintillua.lexers.actionscript"] = "scintillua/lexers/actionscript.lua",
     ["sile.scintillua.lexers.ada"] = "scintillua/lexers/ada.lua",
     ["sile.scintillua.lexers.antlr"] = "scintillua/lexers/antlr.lua",

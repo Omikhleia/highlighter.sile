@@ -26,16 +26,20 @@ local base = require("packages.base")
 local loadkit = require("loadkit")
 local loader = loadkit.make_loader("lua")
 -- Then use it to resolve the path to the lexer module, wherever bundled...
-local lexer_path = pl.path.dirname(loader("scintillua.lexers.lexer"))
+local lexers_std_path = pl.path.dirname(loader("scintillua.lexers.lexer"))
+-- Same idea for our additional lexers, resolved from the addon-lexers.sil file
+-- (so we can later add more lexers in the same directory if needed).
+local lexers_addon_path = pl.path.dirname(loader("addon-lexers.sil"))
 -- Now we can assume all lexers are in the same directory...
 -- But SILE's package API defines its own package object, so we need to
 -- do all this magic before the package definition, in order to play with
 -- the standard 'package' table.
 -- You are having as much fun as I am, right?
-lexer_path = lexer_path .. "/?.lua"
+lexers_std_path = lexers_std_path .. "/?.lua"
+lexers_addon_path = lexers_addon_path .. "/?.lua"
 local function hackRequirePathForScintillua(callback)
   local old = package.path
-  package.path = lexer_path
+  package.path = lexers_std_path .. ";" .. lexers_addon_path
   local ret = callback()
   package.path = old
   return ret
@@ -148,7 +152,8 @@ function package:_init (_)
     -- But we need to hack the package.path to make it work where the lexers
     -- are, and not whatever the current directory is...
     local lexer = require('lexer')
-    local names = lexer.names()
+    local lexer_names_std = lexer.names()
+    local lexer_names_addons = lexer.names('addon-lexers')
     -- Note: the Scintillua API says it returns a list of names, but it actually
     -- returns a table with the names as 'true' values:
     -- { "name1", "name2", ... name1 = true, name2 = true, ... }).
@@ -157,7 +162,10 @@ function package:_init (_)
     -- The extra work is negligible, and it makes the code more robust if the
     -- undocumented internals changes...
     -- You still have fun, right?
-    for _, v in ipairs(names) do
+    for _, v in ipairs(lexer_names_std) do
+      self._hasLexer[v] = true
+    end
+    for _, v in ipairs(lexer_names_addons) do
       self._hasLexer[v] = true
     end
   end)
@@ -174,7 +182,7 @@ function package:loadAltPackage (resilientpack, legacypack)
   -- Pretty lame, but heh, we try to play fair with the standard SILE
   -- distribution.
   -- Actually in a resilient context, the compatibility layer would enforce
-  -- the use of the resilient variant anywaut, but with a ugly warning.
+  -- the use of the resilient variant anyway, but with a ugly warning.
   -- More fun on the way, right?
   if self.class.hasStyle then
     SU.debug("highlighter", "Loading style-aware package", resilientpack)

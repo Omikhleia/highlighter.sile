@@ -72,4 +72,18 @@ end;
      }
 \end{raw}
 
+\begin[type=highlight,language=sil]{raw}
+\begin[papersize=a7]{document}
+\nofolios
+\neverindent
+\use[module=packages.textsubsuper]
+
+\comment{Some SIL code}
+
+SILE is a \em{typesetting system} written
+in \font[features=+smcp]{Lua}.}\lua{SILE.call("textsuperscript", {}, "*")}
+
+\end{document}
+\end{raw}
+
 \end{document}
