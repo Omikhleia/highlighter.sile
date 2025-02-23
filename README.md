@@ -35,8 +35,41 @@ The in-code package documentation may also be useful.
 
 TODO: A readable version of the documentation is included in the User Manual for the [resilient.sile](https://github.com/Omikhleia/resilient.sile) collection of classes and packages.
 
+## Supported languages
+
+The package supports all languages for which a Scintillua lexer is available, i.e. more that 150 languages, including:
+
+`actionscript`, `ada`, `antlr`, `apdl`, `apl`, `applescript`, `asm`, `asp`, `autohotkey`, `autoit`, `awk`,
+`bash`, `batch`, `bibtex`, `boo`,
+`c`, `caml`, `chuck`, `clojure`, `cmake`, `coffeescript`, `container`, `context`, `cpp`, `crystal`, `csharp`, `css`, `cuda`,
+`d`, `dart`, `desktop`, `diff`, `django`, `djot`, `dockerfile`, `dot`,
+`eiffel`, `elixir`, `elm`, `erlang`,
+`factor`, `fantom`, `faust`, `fennel`, `fish`, `forth`, `fortran`, `fsharp`, `fstab`,
+`gap`, `gemini`, `gettext`, `gherkin`, `git-rebase`, `gleam`, `glsl`, `gnuplot`, `go`, `groovy`, `gtkrc`,
+`hare`, `haskell`, `html`,
+`icon`, `idl`, `inform`, `ini`, `io_lang`,
+`java`, `javascript`, `jq`, `json`, `jsp`, `julia`,
+`latex`, `ledger`, `less`, `lilypond`, `lisp`, `litcoffee`, `logtalk`, `lua`,
+`makefile`, `markdown`, `matlab`, `mediawiki`, `meson`, `moonscript`, `myrddin`,
+`nemerle`, `networkd`, `nim`, `nix`, `nsis`, `null`,
+`objeck`, `objective_c`, `output`,
+`pascal`, `perl`, `php`, `pico8`, `pike`, `pkgbuild`, `pony`, `powershell`, `prolog`, `props`, `protobuf`, `ps`, `pure`, `python`,
+`r`, `rails`, `rc`, `reason`, `rebol`, `rest`, `rexx`, `rhtml`, `routeros`, `rpmspec`, `ruby`, `rust`,
+`sass`, `scala`, `scheme`, `smalltalk`, `sml`, `snobol4`, `spin`, `sql`, `strace`, `systemd`,
+`taskpaper`, `tcl`, `tex`, `texinfo`, `text`, `toml`, `troff`, `txt2tags`, `typescript`,
+`vala`, `vb`, `vcard`, `verilog`, `vhdl`,
+`wsf`,
+`xml`, `xs`, `xtend`,
+`yaml`, `zig`.
+
+It also supports the following "add-on lexers" (which are not included in the Scintillua distribution as the current implementation of their grammar is not context-free, and thus not suitable for text editors where the user can type code on the fly):
+- `sil` (SILE's custom SIL "TeX-like flavor" language).
+
+If your favorite language is not supported, and you are a Lua programmer with some experience using LPeg, you may want to contribute a lexer to the Scintillua project, before suggesting it here.
+It's a cool project, and the maintainers are very friendly and helpful.
+
 ## License
 
-All SILE-related code and samples in this repository are released under the MIT License, (c) 2025,Omikhleia.
+All SILE-related code and samples in this repository are released under the MIT License, (c) 2025, Omikhleia.
 
 The syntax highlighting support (as a Git submodule) is [Scintillua](https://github.com/orbitalquark/scintillua), which is released under the MIT License, (c) 2007-2025, Mitchell.
