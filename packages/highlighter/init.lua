@@ -147,7 +147,7 @@ function package:_init (_)
 
   -- Names of available lexers.
   self._hasLexer = {}
-  self._lexernames = hackRequirePathForScintillua(function()
+  hackRequirePathForScintillua(function()
     -- Scintillua assumes lfs is available, which is our case with SILE.
     -- But we need to hack the package.path to make it work where the lexers
     -- are, and not whatever the current directory is...
@@ -239,7 +239,7 @@ function package:_findAndApplyClosestStyle(token, snippet)
 end
 
 function package:registerRawHandlers ()
-  self.class:registerRawHandler("highlight", function(options, content)
+  self:registerRawHandler("highlight", function (options, content)
     local code = content[1]
     -- Without lots of clumsy %s everywhere in SIL...
     -- We'd usually have:
@@ -301,7 +301,7 @@ function package:registerRawHandlers ()
         end
       end
       if not found then
-        SU.debug("highlighter", "No lexer found for language", options.class)
+        SU.debug("highlighter", "No lexer found for the specified language(s)", options.class)
         return {}
       end
       local fname = found
@@ -359,6 +359,30 @@ function package:registerRawHandlers ()
   end)
 end
 
+function package:registerCommands ()
+  self:registerCommand("highlight", function (options, content)
+    if SU.ast.hasContent(content) then
+      SU.error("The \\highlight[src=...] command does not take content")
+    end
+    local src = SU.required(options, "src", "The \\highlight command")
+    local source = SILE.resolveFile(src)
+    if not source then
+      SU.error("Can't find file " .. src)
+    end
+    local file = io.open(source, "rb")
+    if not file then
+      SU.error("Can't open file " .. src)
+    end
+    local file_content = file:read("*a")
+    file:close()
+    -- Determine the language from the file extension if not specified.
+    local language = options.language or pl.path.extension(src):sub(2)
+    SU.debug("highlighter", "Highlighting file", src, "as language", language)
+    -- Invoke the same logic as the raw handler.
+    SILE.rawHandlers.highlight({ language = language, marker = options.marker }, { file_content })
+  end, "Syntax-highlight an external file")
+end
+
 function package:registerStyle (name, opts, styledef)
   return self.class:registerStyle(name, opts, styledef, self._name)
 end
@@ -413,6 +437,10 @@ Otherwise, it’s just syntax-colored.
          return n;
      }
 \end{raw}
+
+The package also provides a command \autodoc:command{\highlight[src=<file name>]} to syntax-highlight an external file.
+It simply reads the file content and highlights it as if it was a raw code block.
+The language is determined from the file extension, unless specified with the \autodoc:parameter{language} parameter.
 
 \end{document}]]
 

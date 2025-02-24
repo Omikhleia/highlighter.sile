@@ -3,6 +3,8 @@
 \neverindent
 \use[module=packages.highlighter]
 
+% Some code snippets as raw blocks (inlined in SIL)
+
 \begin[type=highlight,language=lua]{raw}
 local function fibonacci(n) -- Fibonacci in Lua
     if n <= 1 then
@@ -71,6 +73,12 @@ end;
          return n;
      }
 \end{raw}
+
+% Some code snippets as external files
+
+\highlight[src=fib.go]
+
+% Some inlined SIL code (using our own lexer)
 
 \begin[type=highlight,language=sil]{raw}
 \begin[papersize=a7]{document}
