@@ -2,7 +2,8 @@
 \nofolios
 \neverindent
 \use[module=packages.highlighter]
-\use[module=packages.color]
+
+% Some code snippets as raw blocks (inlined in SIL)
 
 \begin[type=highlight,language=lua]{raw}
 local function fibonacci(n) -- Fibonacci in Lua
@@ -71,6 +72,26 @@ end;
      if (n <= 1) {
          return n;
      }
+\end{raw}
+
+% Some code snippets as external files
+
+\highlight[src=fib.go]
+
+% Some inlined SIL code (using our own lexer)
+
+\begin[type=highlight,language=sil]{raw}
+\begin[papersize=a7]{document}
+\nofolios
+\neverindent
+\use[module=packages.textsubsuper]
+
+\comment{Some SIL code}
+
+SILE is a \em{typesetting system} written
+in \font[features=+smcp]{Lua}.}\lua{SILE.call("textsuperscript", {}, "*")}
+
+\end{document}
 \end{raw}
 
 \end{document}
