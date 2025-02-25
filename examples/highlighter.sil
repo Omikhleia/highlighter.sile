@@ -74,6 +74,14 @@ end;
      }
 \end{raw}
 
+% Interesting edge case: YAML with unexpected unicode characters (brackets)
+
+\begin[type=highlight,language=yaml]{raw}
+content:
+  chapters: # Below some unexpected unicode characters in YAML
+    ⟨...⟩
+\end{raw}
+
 % Some code snippets as external files
 
 \highlight[src=fib.go]

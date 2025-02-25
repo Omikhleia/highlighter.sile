@@ -11,7 +11,12 @@
 --   License: MIT
 --
 -- Message to the knowledgeable readers in the SILE ecosystem:
--- "Where is the horse gone? Where the rider? Where the giver of treasure?"
+--   "Where is the horse gone? Where the rider? Where the giver of treasure?"
+-- And from Conan the Barbarian (Milius, 1982):
+--   "And if you do not listen, then to hell with you!"
+-- Fact is, there are no knowledgeable readers in the SILE ecosystem,
+-- since there is no true ecosystem, only a few scattered souls :)
+-- Yes, I'm unhappy with you all. You should have done better.
 --
 local base = require("packages.base")
 
@@ -314,6 +319,43 @@ function package:registerRawHandlers ()
       SILE.call("verbatim", {}, marker and { labelCommand, code } or { code })
       return
     end
+
+    -- Collaspse consecutive tokens of the same type.
+    -- Why? First because they end up being styled the same way, so we can reduce them.
+    -- Second, because the Scintillua lexers may produce a lot of tokens, broken at wrong unicode boundaries.
+    -- Ex. with (improper) YAML as foolows:
+    --   content:
+    --     chapters:
+    --       ⟨...⟩
+    -- The YAML lexer splits the ⟨...⟩ into byte-sized "default" tokens for the brackets.
+    -- So we get invalid UTF-8 bits of string, split at the wrong place.
+    -- This was _certainly_ not the intended behavior of the lexer, but I am not going to investigate
+    -- why it does that.
+    -- I am not sure re-assembling tokens will _always_ work with all lexers, but for the above case, it does.
+    -- I'm having so much fun, as you are, right?
+    local last_token
+    local last_pos
+    local collapsed_tokens = {}
+    for i = 1, #tokens, 2 do
+      local token = tokens[i]
+      local pos = tokens[i+1]
+      if last_token == token then
+        last_pos = pos
+      else
+        if last_token then
+          table.insert(collapsed_tokens, last_token)
+          table.insert(collapsed_tokens, last_pos)
+        end
+        last_token = token
+        last_pos = pos
+      end
+    end
+    if last_token then
+      table.insert(collapsed_tokens, last_token)
+      table.insert(collapsed_tokens, last_pos)
+    end
+    tokens = collapsed_tokens
+
     -- Now we have tokens, we can style them.
     local spans = {}
     if options.marker then
@@ -343,6 +385,7 @@ function package:registerRawHandlers ()
           -- We insert a zero-width space to prevent the
           -- line from collapsing when containing a line-break.
           -- It seems SILE's typesetter still has something unclear here?
+          -- Always fun to find out, right?
         )
       end
       last = pos
