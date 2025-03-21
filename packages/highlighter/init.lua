@@ -40,11 +40,11 @@ local lexers_addon_path = pl.path.dirname(loader("addon-lexers.sil"))
 -- do all this magic before the package definition, in order to play with
 -- the standard 'package' table.
 -- You are having as much fun as I am, right?
-lexers_std_path = lexers_std_path .. "/?.lua"
-lexers_addon_path = lexers_addon_path .. "/?.lua"
+local lexers_std_lua_path = lexers_std_path .. "/?.lua"
+local lexers_addon_lua_path = lexers_addon_path .. "/?.lua"
 local function hackRequirePathForScintillua(callback)
   local old = package.path
-  package.path = lexers_std_path .. ";" .. lexers_addon_path
+  package.path = lexers_std_lua_path .. ";" .. lexers_addon_lua_path
   local ret = callback()
   package.path = old
   return ret
@@ -158,7 +158,7 @@ function package:_init (_)
     -- are, and not whatever the current directory is...
     local lexer = require('lexer')
     local lexer_names_std = lexer.names()
-    local lexer_names_addons = lexer.names('addon-lexers')
+    local lexer_names_addons = lexer.names(lexers_addon_path)
     -- Note: the Scintillua API says it returns a list of names, but it actually
     -- returns a table with the names as 'true' values:
     -- { "name1", "name2", ... name1 = true, name2 = true, ... }).
