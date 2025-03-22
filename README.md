@@ -33,7 +33,7 @@ Examples are provided in the [examples](./examples) folder.
 
 The in-code package documentation may also be useful.
 
-TODO: A readable version of the documentation is included in the User Manual for the [resilient.sile](https://github.com/Omikhleia/resilient.sile) collection of classes and packages.
+A readable version of the documentation is included in the User Manual for the [resilient.sile](https://github.com/Omikhleia/resilient.sile) collection of classes and packages.
 
 ## Supported languages
 
